@@ -34,21 +34,19 @@ then
 fi
 
 ## MAIN ##
-file1 = $1
-file1date = $(stat -c "%Y" $file1)
+file1=$1
+file1date=$(stat -c "%Y" $file1)
 
-file2 = $2
-file2date = $(stat -c "%Y" $file2)
+file2=$2
+file2date=$(stat -c "%Y" $file2)
 
-clear
 if [ $file1date -gt $file2date ]; then
 	echo "The last changes have been detected in $file1, all data in $file2 will be overwritten"
-	echo "Are you sure(y/N)"
-	read answer
+	read -p "Are you sure?(y/N): " answer
 	if [[ $answer == 'y' ]] || [[ $answer == 'yes' ]] || [[ $answer == 'Y' ]] || [[ $answer == 'YES' ]] || [[ $answer == 'Yes' ]]; then
         echo -e "Syncing...\n"
-        rsync -a $file1/ $file2/
-        echo -e "\nDONE"
+        rsync -va $file1/ $file2/
+        echo -e "\nDONE!"
         exit 0
 	elif [[ $answer == 'n' ]] || [[ $answer == 'no' ]] || [[ $answer == 'N' ]] || [[ $answer == 'NO' ]] || [[ $answer == 'No' ]]; then
         echo "Aborting..."
@@ -61,12 +59,11 @@ if [ $file1date -gt $file2date ]; then
 
 elif [ $file1date -lt $file2date ]; then
 	echo "The last changes have been detected in $file2, all data in $file1 will be overwritten"
-	echo "Are you sure(y/N)"
-	read answer
+	read -p "Are you sure?(y/N): " answer
 	if [[ $answer == 'y' ]] || [[ $answer == 'yes' ]] || [[ $answer == 'Y' ]] || [[ $answer == 'YES' ]] || [[ $answer == 'Yes' ]]; then
         echo -e "Syncing...\n"
-        rsync -a $file2/ $file1/
-        echo -e "\nDONE"
+        rsync -va $file2/ $file1/
+        echo -e "\nDONE!"
         exit 0
 	elif [[ $answer == 'n' ]] || [[ $answer == 'no' ]] || [[ $answer == 'N' ]] || [[ $answer == 'NO' ]] || [[ $answer == 'No' ]]; then
         echo -e "\nAborting..."
