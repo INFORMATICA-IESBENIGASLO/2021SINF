@@ -1,7 +1,7 @@
 #!/bin/bash
 # 
 # what is it for?
-# Synchronize directories bi-directionally using rsync
+# Syncing directories unidirectional ORIGIN -> DESTINATION
 # 
 # By Pglez | Dlperezmartinez | Alejandrofan2
 #
@@ -12,8 +12,7 @@
 # 3 > Directory not exists
 # 10 > Unknown error
 #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-clear
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 ## CHECKS ##
 if [ $# -lt 2 ]
@@ -33,52 +32,31 @@ then
 fi
 
 ## MAIN ##
-file1 = $1
-file1date = $(stat -c "%Y" $file1)
+originDir=$1
+destinationDir=$2
 
-file2 = $2
-file2date = $(stat -c "%Y" $file2)
-
-if [ $file1date -gt $file2date ]; then
-    $answer = N
-	echo "The last changes have been detected in $file1, all data in $file2 will be overwritten"
-	echo "Are you sure(y/N)"
-	read answer
-	if [ Answer = "y" ] | [ Answer = "yes" ] | [ Answer = "Y" ] | [ Answer = "YES" ] | [ Answer = "Yes" ] ; then
-        echo "Syncing..."
-        rsync -a $file1/ $file2/
-        echo "DONE"
-        exit 0
-	elif [ Answer = "n" ] | [ Answer = "no" ] | [ Answer = "N" ] | [ Answer = "NO" ] | [ Answer = "No" ]; then
-        echo "Aborting..."
-        exit 1
-	else
-        echo "You must put Y/Yes or N/No"
-        echo "Aborting..."
-        exit 1
-	fi
-
-elif [ $file1date -lt $file2date ]; then
-    $answer = N
-	echo "The last changes have been detected in $file2, all data in $file1 will be overwritten"
-	echo "Are you sure(y/N)"
-	read answer
-	if [ Answer = "y" ] | [ Answer = "yes" ] | [ Answer = "Y" ] | [ Answer = "YES" ] | [ Answer = "Yes" ] ; then
-        echo "Syncing..."
-        rsync -a $file2/ $file1/
-        echo "DONE"
-        exit 0
-	elif [ Answer = "n" ] | [ Answer = "no" ] | [ Answer = "N" ] | [ Answer = "NO" ] | [ Answer = "No" ]; then
-        echo "Aborting..."
-        exit 1
-	else
-        echo "You must put Y/Yes or N/No"
-        echo "Aborting..."
-        exit 1
-	fi
+clear
+if [ $originDir -nt $destinationDir ]; then
+    echo "Syncing..."
+	rsync -avu $originDir $destinationDir
+	echo "DONE"
+	exit 0
 else
-	echo "The files in both folders are identical."
-	echo "Aborting..."
-    exit 1
-fi
+	echo "Warning: $destinationDir has been changed later than $originDir"
+	echo "Are you sure that you want to sync it? (y/N)"
+	read answer
+	if [ answer = "y" ] | [ answer = "yes" ] | [ answer = "Y" ] | [ answer = "YES" ] | [ answer = "Yes" ]; then
+		echo "Syncing..."
+		rsync -avu $originDir $destinationDir
+		echo "DONE"
+	elif [ answer = "n" ] | [ answer = "no" ] | [ answer = "N" ] | [ answer = "NO" ] | [ answer = "No" ]; then
+         echo "Aborting..."
+        exit 1
+	else
+        echo "You must put Y/Yes or N/No"
+        echo "Aborting..."
+        exit 1
+	fi
+	
 exit 10
+
