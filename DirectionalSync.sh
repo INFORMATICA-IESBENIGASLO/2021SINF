@@ -23,11 +23,13 @@ fi
 if [[ ! -d "$1" ]]
 then
     echo "$1 not exists on your filesystem."
+    echo -e "\nAborting..."
     exit 3
 fi
 if [[ ! -d "$2" ]]
 then
     echo "$2 not exists on your filesystem."
+    echo -e "\nAborting..."
     exit 3
 fi
 
@@ -37,26 +39,24 @@ destinationDir=$2
 
 clear
 if [ $originDir -nt $destinationDir ]; then
-    echo "Syncing..."
+    echo -e "Syncing...\n"
 	rsync -avu $originDir $destinationDir
-	echo "DONE"
+	echo -e "\nDONE!"
 	exit 0
 else
 	echo "Warning: $destinationDir has been changed later than $originDir"
-	echo "Are you sure that you want to sync it? (y/N)"
-	read answer
-	if [ answer = "y" ] | [ answer = "yes" ] | [ answer = "Y" ] | [ answer = "YES" ] | [ answer = "Yes" ]; then
-		echo "Syncing..."
+	read -p "Are you sure that you want to sync it? (y/N): " answer
+	if [[ $answer == 'y' ]] || [[ $answer == 'yes' ]] || [[ $answer == 'Y' ]] || [[ $answer == 'YES' ]] || [[ $answer == 'Yes' ]]; then
+		echo -e "Syncing...\n" 
 		rsync -avu $originDir $destinationDir
-		echo "DONE"
-	elif [ answer = "n" ] | [ answer = "no" ] | [ answer = "N" ] | [ answer = "NO" ] | [ answer = "No" ]; then
-         echo "Aborting..."
+		echo -e "\nDONE!"
+	elif [[ $answer == 'n' ]] || [[ $answer == 'no' ]] || [[ $answer == 'N' ]] || [[ $answer == 'NO' ]] || [[ $answer == 'No' ]]; then
+         echo -e "\nAborting..."
         exit 1
 	else
-        echo "You must put Y/Yes or N/No"
+        echo  -e"\nYou must put Y/Yes or N/No"
         echo "Aborting..."
         exit 1
 	fi
-	
+fi
 exit 10
-
