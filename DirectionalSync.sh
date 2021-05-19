@@ -44,7 +44,7 @@ if [ $originDir -nt $destinationDir ]; then
 	echo -e "\nDONE!"
 	exit 0
 else
-	echo "Warning: $destinationDir has been changed later than $originDir"
+	echo "Warning: $destinationDir has been changed later than $originDir."
 	read -p "Are you sure that you want to sync it? (y/N): " answer
 	if [[ $answer == 'y' ]] || [[ $answer == 'yes' ]] || [[ $answer == 'Y' ]] || [[ $answer == 'YES' ]] || [[ $answer == 'Yes' ]]; then
 		echo -e "Syncing...\n" 
