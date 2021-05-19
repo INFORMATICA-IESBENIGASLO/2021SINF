@@ -40,7 +40,7 @@ destinationDir=$2
 clear
 if [ $originDir -nt $destinationDir ]; then
     echo -e "Syncing...\n"
-	rsync -avu $originDir $destinationDir
+	rsync -avu $originDir/ $destinationDir/
 	echo -e "\nDONE!"
 	exit 0
 else
@@ -48,7 +48,7 @@ else
 	read -p "Are you sure that you want to sync it? (y/N): " answer
 	if [[ $answer == 'y' ]] || [[ $answer == 'yes' ]] || [[ $answer == 'Y' ]] || [[ $answer == 'YES' ]] || [[ $answer == 'Yes' ]]; then
 		echo -e "Syncing...\n" 
-		rsync -avu $originDir $destinationDir
+		rsync -avu $originDir/ $destinationDir/
 		echo -e "\nDONE!"
 	elif [[ $answer == 'n' ]] || [[ $answer == 'no' ]] || [[ $answer == 'N' ]] || [[ $answer == 'NO' ]] || [[ $answer == 'No' ]]; then
          echo -e "\nAborting..."
