@@ -22,12 +22,14 @@ then
 fi
 if [[ ! -d "$1" ]]
 then
-    echo "$1 not exists on your filesystem."
+    echo -e "\n$1 not exists on your filesystem."
+    echo "Aborting..."
     exit 3
 fi
 if [[ ! -d "$2" ]]
 then
-    echo "$2 not exists on your filesystem."
+    echo -e "\n$2 not exists on your filesystem."
+    echo "Aborting..."
     exit 3
 fi
 
@@ -44,15 +46,15 @@ if [ $file1date -gt $file2date ]; then
 	echo "Are you sure(y/N)"
 	read answer
 	if [[ $answer == 'y' ]] || [[ $answer == 'yes' ]] || [[ $answer == 'Y' ]] || [[ $answer == 'YES' ]] || [[ $answer == 'Yes' ]]; then
-        echo "Syncing..."
+        echo -e "Syncing...\n"
         rsync -a $file1/ $file2/
-        echo "DONE"
+        echo -e "\nDONE"
         exit 0
 	elif [[ $answer == 'n' ]] || [[ $answer == 'no' ]] || [[ $answer == 'N' ]] || [[ $answer == 'NO' ]] || [[ $answer == 'No' ]]; then
         echo "Aborting..."
         exit 1
 	else
-        echo "You must put Y/Yes or N/No"
+        echo -e "\nYou must put Y/Yes or N/No"
         echo "Aborting..."
         exit 1
 	fi
@@ -62,20 +64,20 @@ elif [ $file1date -lt $file2date ]; then
 	echo "Are you sure(y/N)"
 	read answer
 	if [[ $answer == 'y' ]] || [[ $answer == 'yes' ]] || [[ $answer == 'Y' ]] || [[ $answer == 'YES' ]] || [[ $answer == 'Yes' ]]; then
-        echo "Syncing..."
+        echo -e "Syncing...\n"
         rsync -a $file2/ $file1/
-        echo "DONE"
+        echo -e "\nDONE"
         exit 0
 	elif [[ $answer == 'n' ]] || [[ $answer == 'no' ]] || [[ $answer == 'N' ]] || [[ $answer == 'NO' ]] || [[ $answer == 'No' ]]; then
-        echo "Aborting..."
+        echo -e "\nAborting..."
         exit 1
 	else
-        echo "You must put Y/Yes or N/No"
+        echo -e "\nYou must put Y/Yes or N/No"
         echo "Aborting..."
         exit 1
 	fi
 else
-	echo "The files in both folders are identical."
+	echo -e "\nThe files in both folders are identical."
 	echo "Aborting..."
     exit 1
 fi

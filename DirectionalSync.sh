@@ -22,14 +22,14 @@ then
 fi
 if [[ ! -d "$1" ]]
 then
-    echo "$1 not exists on your filesystem."
-    echo -e "\nAborting..."
+    echo -e "$1 not exists on your filesystem."
+    echo "Aborting..."
     exit 3
 fi
 if [[ ! -d "$2" ]]
 then
-    echo "$2 not exists on your filesystem."
-    echo -e "\nAborting..."
+    echo -e "$2 not exists on your filesystem."
+    echo "Aborting..."
     exit 3
 fi
 
